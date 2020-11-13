@@ -56,11 +56,17 @@ void run_sdl()
       ++buffer[i];
     }
 
+#if 1
+    // slower: 77% CPU (from top on a Pi3)
     void * pixels;
     int pitch;
     SDL_LockTexture(tex.get(), nullptr, &pixels, &pitch);
     memcpy(pixels, buffer.data(), width * height * 4);
     SDL_UnlockTexture(tex.get());
+#else
+    // faster: 66% CPU (from top on a Pi3)
+    SDL_UpdateTexture(tex.get(), nullptr, buffer.data(), width * 4);
+#endif
 
     SDL_RenderCopyEx(ren.get(), tex.get(), &srect, nullptr, 0.0, nullptr, SDL_FLIP_VERTICAL);
     SDL_RenderPresent(ren.get());
