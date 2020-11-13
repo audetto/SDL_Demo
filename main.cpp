@@ -32,6 +32,7 @@ void debuginfo_renderer(SDL_Renderer *r)
 
 void run_sdl()
 {
+  // values from AppleWin
   const int width = 600;  // GetFrameBufferWidth();
   const int height = 420; // GetFrameBufferHeight();
   const int sx = 20; // GetFrameBufferBorderWidth();
@@ -54,7 +55,7 @@ void run_sdl()
   }
   debuginfo_renderer(ren.get());
 
-  const Uint32 format = SDL_PIXELFORMAT_BGRA32;
+  const Uint32 format = SDL_PIXELFORMAT_ARGB8888;
   std::shared_ptr<SDL_Texture> tex(SDL_CreateTexture(ren.get(), format, SDL_TEXTUREACCESS_STREAMING, width, height), SDL_DestroyTexture);
 
   SDL_Rect srect;
@@ -84,7 +85,7 @@ void run_sdl()
       ++buffer[i];
     }
 
-#if 1
+#if 0
     // slower: 77% CPU (from top on a Pi3)
     void * pixels;
     int pitch;
