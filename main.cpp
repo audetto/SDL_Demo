@@ -3,6 +3,33 @@
 #include <memory>
 #include <vector>
 
+void debuginfo_renderer(SDL_Renderer *r)
+{
+  int n = SDL_GetNumRenderDrivers();
+  std::cout << "**--- SDL DEBUG ------ (" << n << ") drivers" << std::endl;
+  for(int i = 0; i < n; i++)
+  {
+      SDL_RendererInfo info;
+      SDL_GetRenderDriverInfo(i, &info);
+      std::cout << "*   '" << info.name << "'" << std::endl;
+  }
+
+  SDL_RendererInfo info = {0};
+  if (SDL_GetRendererInfo(r,&info) == 0)
+  {
+    std::cout << "* SDL_RENDERER_SOFTWARE: " << ((info.flags & SDL_RENDERER_SOFTWARE) > 0) << std::endl;
+    std::cout << "* SDL_RENDERER_ACCELERATED: " << ((info.flags & SDL_RENDERER_ACCELERATED) > 0) << std::endl;
+    std::cout << "* SDL_RENDERER_PRESENTVSYNC: " << ((info.flags & SDL_RENDERER_PRESENTVSYNC) > 0) << std::endl;
+    std::cout << "* SDL_RENDERER_TARGETTEXTURE: " << ((info.flags & SDL_RENDERER_TARGETTEXTURE) > 0) << std::endl;
+    std::cout << "* active renderer -> '" << info.name << "'" << std::endl;
+  }
+  else
+  {
+    std::cout << "NO Renderinfo" << std::endl;
+  }
+}
+
+
 void run_sdl()
 {
   const int width = 600;  // GetFrameBufferWidth();
@@ -25,6 +52,7 @@ void run_sdl()
     std::cout << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
     return;
   }
+  debuginfo_renderer(ren.get());
 
   const Uint32 format = SDL_PIXELFORMAT_BGRA32;
   std::shared_ptr<SDL_Texture> tex(SDL_CreateTexture(ren.get(), format, SDL_TEXTUREACCESS_STREAMING, width, height), SDL_DestroyTexture);
