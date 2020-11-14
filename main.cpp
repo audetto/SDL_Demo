@@ -47,7 +47,7 @@ void run_sdl()
     return;
   }
 
-  std::shared_ptr<SDL_Renderer> ren(SDL_CreateRenderer(win.get(), -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC), SDL_DestroyRenderer);
+  std::shared_ptr<SDL_Renderer> ren(SDL_CreateRenderer(win.get(), 1, SDL_RENDERER_PRESENTVSYNC), SDL_DestroyRenderer);
   if (!ren)
   {
     std::cout << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
