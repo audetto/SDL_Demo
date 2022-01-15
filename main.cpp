@@ -6,7 +6,7 @@
 void debuginfo_renderer(SDL_Renderer *r)
 {
   int n = SDL_GetNumRenderDrivers();
-  std::cout << "**--- SDL DEBUG ------ (" << n << ") drivers" << std::endl;
+  std::cout << "* " << n << " drivers:" << std::endl;
   for (int i = 0; i < n; i++)
   {
     SDL_RendererInfo info;
@@ -39,7 +39,7 @@ void run_sdl()
   const int sw = 560;     // GetFrameBufferBorderlessWidth();
   const int sh = 384;     // GetFrameBufferBorderlessHeight();
 
-  std::shared_ptr<SDL_Window> win(SDL_CreateWindow("Demo", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, sw, sh, SDL_WINDOW_SHOWN), SDL_DestroyWindow);
+  std::shared_ptr<SDL_Window> win(SDL_CreateWindow("Demo", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, sw, sh, SDL_WINDOW_RESIZABLE), SDL_DestroyWindow);
   if (!win)
   {
     std::cerr << "SDL_CreateWindow Error: " << SDL_GetError() << std::endl;
@@ -66,14 +66,84 @@ void run_sdl()
   std::vector<char> buffer(width * height * 4);
 
   bool quit = false;
+  size_t start = SDL_GetTicks();
+  size_t frames = 0;
   do
   {
+    ++frames;
     SDL_Event e;
     while (SDL_PollEvent(&e) != 0)
     {
-      if (e.type == SDL_QUIT)
+      switch (e.type)
+      {
+      case SDL_QUIT:
       {
         quit = true;
+        break;
+      }
+      case SDL_KEYDOWN:
+      {
+        switch (e.key.keysym.sym)
+        {
+        case SDLK_ESCAPE:
+        {
+          quit = true;
+          break;
+        }
+        case SDLK_w:
+        {
+          SDL_SetWindowFullscreen(win.get(), 0);
+          int w, h;
+          SDL_GetWindowSize(win.get(), &w, &h);
+          start = SDL_GetTicks();
+          frames = 0;
+          std::cout << "Window: " << w << "x" << h << std::endl;
+          break;
+        }
+        case SDLK_f:
+        {
+          SDL_SetWindowFullscreen(win.get(), SDL_WINDOW_FULLSCREEN);
+          start = SDL_GetTicks();
+          frames = 0;
+          std::cout << "FULLSCREEN" << std::endl;
+          break;
+        }
+        case SDLK_d:
+        {
+          SDL_SetWindowFullscreen(win.get(), SDL_WINDOW_FULLSCREEN_DESKTOP);
+          start = SDL_GetTicks();
+          frames = 0;
+          std::cout << "FULLSCREEN_DESKTOP" << std::endl;
+          break;
+        }
+        case SDLK_p:
+        {
+          const size_t now = SDL_GetTicks();
+          const size_t fps = 1000 * frames / (now - start);
+          std::cout << "FPS: " << fps << " frames: " << frames << std::endl;
+          start = now;
+          frames = 0;
+          break;
+        }
+        case SDLK_0:
+        {
+          SDL_GL_SetSwapInterval(0);
+          std::cout << "GL swap = 0" << std::endl;
+          start = SDL_GetTicks();
+          frames = 0;
+          break;
+        }
+        case SDLK_1:
+        {
+          SDL_GL_SetSwapInterval(1);
+          std::cout << "GL swap = 1" << std::endl;
+          start = SDL_GetTicks();
+          frames = 0;
+          break;
+        }
+        }
+        break;
+      }
       }
     }
 
