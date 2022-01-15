@@ -7,15 +7,15 @@ void debuginfo_renderer(SDL_Renderer *r)
 {
   int n = SDL_GetNumRenderDrivers();
   std::cout << "**--- SDL DEBUG ------ (" << n << ") drivers" << std::endl;
-  for(int i = 0; i < n; i++)
+  for (int i = 0; i < n; i++)
   {
-      SDL_RendererInfo info;
-      SDL_GetRenderDriverInfo(i, &info);
-      std::cout << "*   '" << info.name << "'" << std::endl;
+    SDL_RendererInfo info;
+    SDL_GetRenderDriverInfo(i, &info);
+    std::cout << "*   '" << info.name << "'" << std::endl;
   }
 
   SDL_RendererInfo info = {0};
-  if (SDL_GetRendererInfo(r,&info) == 0)
+  if (SDL_GetRendererInfo(r, &info) == 0)
   {
     std::cout << "* SDL_RENDERER_SOFTWARE: " << ((info.flags & SDL_RENDERER_SOFTWARE) > 0) << std::endl;
     std::cout << "* SDL_RENDERER_ACCELERATED: " << ((info.flags & SDL_RENDERER_ACCELERATED) > 0) << std::endl;
@@ -29,16 +29,15 @@ void debuginfo_renderer(SDL_Renderer *r)
   }
 }
 
-
 void run_sdl()
 {
   // values from AppleWin
   const int width = 600;  // GetFrameBufferWidth();
   const int height = 420; // GetFrameBufferHeight();
-  const int sx = 20; // GetFrameBufferBorderWidth();
-  const int sy = 18; // GetFrameBufferBorderHeight();
-  const int sw = 560; // GetFrameBufferBorderlessWidth();
-  const int sh = 384; // GetFrameBufferBorderlessHeight();
+  const int sx = 20;      // GetFrameBufferBorderWidth();
+  const int sy = 18;      // GetFrameBufferBorderHeight();
+  const int sw = 560;     // GetFrameBufferBorderlessWidth();
+  const int sh = 384;     // GetFrameBufferBorderlessHeight();
 
   std::shared_ptr<SDL_Window> win(SDL_CreateWindow("Demo", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, sw, sh, SDL_WINDOW_SHOWN), SDL_DestroyWindow);
   if (!win)
@@ -74,7 +73,7 @@ void run_sdl()
     {
       if (e.type == SDL_QUIT)
       {
-	quit = true;
+        quit = true;
       }
     }
 
@@ -114,7 +113,7 @@ int main()
   {
     run_sdl();
   }
-  catch (const std::exception & e)
+  catch (const std::exception &e)
   {
     std::cerr << e.what() << std::endl;
   }
