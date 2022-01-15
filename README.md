@@ -7,6 +7,12 @@ cmake --build build
 build/sddemo
 ```
 
+To select a particular renderer use
+```
+SDL_RENDER_DRIVER=opengles2 ./sddemo
+```
+
+
 Keys
 
 - w: windowed

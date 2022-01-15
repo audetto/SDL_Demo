@@ -46,7 +46,7 @@ void run_sdl()
     return;
   }
 
-  std::shared_ptr<SDL_Renderer> ren(SDL_CreateRenderer(win.get(), 1, SDL_RENDERER_PRESENTVSYNC), SDL_DestroyRenderer);
+  std::shared_ptr<SDL_Renderer> ren(SDL_CreateRenderer(win.get(), -1, SDL_RENDERER_PRESENTVSYNC), SDL_DestroyRenderer);
   if (!ren)
   {
     std::cout << "SDL_CreateRenderer Error: " << SDL_GetError() << std::endl;
@@ -150,7 +150,7 @@ void run_sdl()
     // applewin fills the buffer
     for (size_t i = 0; i < buffer.size(); ++i)
     {
-      // just loop;
+      // just loop and increment all greys;
       ++buffer[i];
     }
 
