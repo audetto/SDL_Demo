@@ -2,17 +2,14 @@
 
 #include <SDL.h>
 #include <memory>
-#include <vector>
 
 class Renderer
 {
 public:
-  Renderer();
   virtual ~Renderer() {}
   virtual void show() = 0;
 
   std::shared_ptr<SDL_Window> win;
-  std::vector<char> buffer;
 
 protected:
   // values from AppleWin

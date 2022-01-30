@@ -1,13 +1,13 @@
 #include <iostream>
 #include <SDL.h>
 #include <memory>
-#include <vector>
 
 #include "sdlrenderer.h"
+#include "glrenderer.h"
 
 void run_sdl()
 {
-  std::shared_ptr<Renderer> renderer(new SDLRenderer);
+  std::shared_ptr<Renderer> renderer(new GLRenderer);
 
   bool quit = false;
   size_t start = SDL_GetTicks();
@@ -89,13 +89,6 @@ void run_sdl()
         break;
       }
       }
-    }
-
-    // applewin fills the buffer
-    for (size_t i = 0; i < renderer->buffer.size(); ++i)
-    {
-      // just loop and increment all greys;
-      ++renderer->buffer[i];
     }
 
     renderer->show();

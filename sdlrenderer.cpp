@@ -35,10 +35,16 @@ namespace
 
 SDLRenderer::SDLRenderer()
 {
+  win.reset(SDL_CreateWindow("Demo", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, sw, sh, SDL_WINDOW_RESIZABLE), SDL_DestroyWindow);
+  if (!win)
+  {
+    throw std::runtime_error(SDL_GetError());
+  }
+
   ren.reset(SDL_CreateRenderer(win.get(), -1, SDL_RENDERER_PRESENTVSYNC), SDL_DestroyRenderer);
   if (!ren)
   {
-    throw std::runtime_error(std::string("SDL_CreateRenderer Error: ") + SDL_GetError());
+    throw std::runtime_error(SDL_GetError());
   }
   debuginfo_renderer(ren.get());
 
@@ -49,10 +55,19 @@ SDLRenderer::SDLRenderer()
   srect.y = sy;
   srect.w = sw;
   srect.h = sh;
+
+  buffer.resize(width * height * 4);
 }
 
 void SDLRenderer::show()
 {
+  // applewin fills the buffer
+  for (size_t i = 0; i < buffer.size(); ++i)
+  {
+    // just loop and increment all greys;
+    ++buffer[i];
+  }
+
 #if 0
   // slower: 77% CPU (from top on a Pi3)
   void * pixels;
